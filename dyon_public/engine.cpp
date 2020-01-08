@@ -15,7 +15,6 @@ Engine::Engine(Log* log)
 	char *option_knife_range[] = { "Off", "250", "350", "500" };
 	char *option_movespeed_penalty[] = { "Off", "115%", "125%", "145%" };
 	this->menu_->AddItem(&this->esp_status_, "ESPs", option_on_off, 2);
-	this->menu_->AddItem(&this->no_recoil_status_, "No recoil", option_on_off, 2);
 	junkasm
 	this->menu_->AddItem(&this->wallhack_status_, "Wallhack", option_on_off, 2);
 	this->menu_->AddItem(&this->seeghost_status_, "See ghost", option_on_off, 2);
@@ -62,20 +61,11 @@ bool Engine::Init() {
 	this->getlocalplayer_ = FindPattern(this->cshell_base_, 0xFFFFFF, reinterpret_cast<uint8_t*>("\x56\x8B\xF1\x0F\xB6\x86\x00\x00\x00\x00\x50\xE8\x00\x00\x00\x00\x83\xC4\x04\x84\xC0\x75\x04"), "xxxxxx????xx????xxxxxxx");
 	this->file_log_->Writef("Address of GetLocalPlayer Func: 0x%X", this->getlocalplayer_);
 
-	this->zmfunction_ = (uint32_t)(FindPattern(this->cshell_base_, 0xFFFFFF, reinterpret_cast<uint8_t*>("\x8B\x0D\x00\x00\x00\x00\x8B\x89\x00\x00\x00\x00\x85\xC9\x74\x10"), "xx????xx????xxxx") - 0x19);
-	this->call_to_zmfunction_ = (uint32_t)(FindPattern(this->cshell_base_, 0xFFFFFF, reinterpret_cast<uint8_t*>("\x57\xFF\xD2\x8B\xCE\xE8\x00\x00\x00\x00\x8D\x8E\x00\x00\x00\x00"), "xxxxxx????xx????") + 5);
-
-	if (!this->zmfunction_ || !this->call_to_zmfunction_)
-		return false;
-
-	this->file_log_->Writef("Address of ZM function: 0x%X", this->flipscreen_);
-	this->file_log_->Writef("Call to ZM function: 0x%X", this->call_to_flipscreen_);
 
 	this->initialized_ = true;
 	return true;
 }
-__declspec(noinline) IDirect3DDevice9* Engine::GetDevice()
-{
+__declspec(noinline) IDirect3DDevice9* Engine::GetDevice(){
 	DWORD *dwPointer = (DWORD *)this->deviceGame_;
 
 	if (!dwPointer)
@@ -118,41 +108,25 @@ __declspec(noinline) bool Engine::WorldToScreen(D3DXVECTOR3 *vWorldLocation, D3D
 
 	return (vScreenCoord->z < 1.f);
 }
-__declspec(noinline) DWORD Engine::getLocalPlayerFunc()
-{
+__declspec(noinline) DWORD Engine::getLocalPlayerFunc(){
 	return this->getlocalplayer_;
 }
-__declspec(noinline) DWORD Engine::getIntersectSegment()
-{
+__declspec(noinline) DWORD Engine::getIntersectSegment(){
 	return this->address_of_intersect_;
 }
-void Engine::HookFlipScreen(uint32_t routine, uint32_t* original)
+void Engine::HookFlipScreen(uint32_t routine, uint32_t* original) //https://github.com/biesigrr/phoenix-cf
 {
 	this->file_log_->Write("Setting up game hook: FlipScreen.");
 
-	// let the caller know what the address of the original flipscreen function is
 	*original = this->flipscreen_;
 
 	uint32_t relative_address = routine - this->call_to_flipscreen_ - 5;
 	*reinterpret_cast<uint32_t*>(this->call_to_flipscreen_ + 1) = relative_address;
 }
-
-void Engine::HookZMFunction(uint32_t routine, uint32_t* original)
-{
-	this->file_log_->Write("Setting up game hook: ZM.");
-
-	// let the caller know what the address of the original flipscreen function is
-	*original = this->zmfunction_;
-
-	uint32_t relative_address = routine - this->call_to_zmfunction_ - 5;
-	*reinterpret_cast<uint32_t*>(this->call_to_zmfunction_ + 1) = relative_address;
-}
-void Engine::Run()
-{
-	// navigate through menu and render it
+void Engine::Run(){
 	this->menu_->Navigate();
 	junkasm
-		this->menu_->Render(this->GetDevice());
+	this->menu_->Render(this->GetDevice());
 
 	//wallhack, seeghost & phantom
 	CGameCon *pGameCon = (CGameCon*)(this->address_of_cGame);
@@ -161,9 +135,7 @@ void Engine::Run()
 	pGameCon->SeeGhost = this->seeghost_status_ ? 3 : 5;
 	pGameCon->PhatomLight = this->phantom_status_ ? 50 : 2;
 }
-
-bool __cdecl Engine::IsVisible(D3DXVECTOR3 MePos, D3DXVECTOR3 TargetPos)
-{
+bool __cdecl Engine::IsVisible(D3DXVECTOR3 MePos, D3DXVECTOR3 TargetPos){
 	static IntersectQuery iQuery;
 	static IntersectInfo iInfo;
 	IntersectSegment = (_IntersectSegment)(this->getIntersectSegment());

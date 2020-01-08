@@ -2,13 +2,11 @@
 #include "esp.h"
 #include "d3d.h"
 
-ESP::ESP(Engine* pEngine)
-{
+ESP::ESP(Engine* pEngine){
 	this->engine_ = pEngine;
 }
 
-__forceinline CEntity* ESP::GetPlayerByIndex(uint8_t i)
-{
+__forceinline CEntity* ESP::GetPlayerByIndex(uint8_t i){
 	CEntity* player = nullptr;
 
 	if (i > 0 && i <= 16)
@@ -17,16 +15,14 @@ __forceinline CEntity* ESP::GetPlayerByIndex(uint8_t i)
 	}
 	return player;
 }
-__forceinline CEntity* ESP::GetLocalPlayer()
-{
+__forceinline CEntity* ESP::GetLocalPlayer(){
 	using GetLocalPlayer_t = uint8_t(__thiscall *)(DWORD);
 
 	static DWORD dwGetLocalPlayerFnc = this->engine_->getLocalPlayerFunc();
 
 	return GetPlayerByIndex(reinterpret_cast<GetLocalPlayer_t>(dwGetLocalPlayerFnc)((DWORD)CF_ENTRY::Instance()->pClientShellStub));
 }
-void ESP::Box2D(D3DXVECTOR3 Head, D3DXVECTOR3 Foot, DWORD dwColor)
-{
+void ESP::Box2D(D3DXVECTOR3 Head, D3DXVECTOR3 Foot, DWORD dwColor){
 	D3DXVECTOR3 Box = Head - Foot;
 
 	if (Box.y < 0)
@@ -42,7 +38,7 @@ void ESP::Box2D(D3DXVECTOR3 Head, D3DXVECTOR3 Foot, DWORD dwColor)
 void ESP::DrawSkeleton(int* obj, D3DCOLOR dwColor)//https://www.mpgh.net/forum/showthread.php?t=1435038
 {
 	if (obj)
-	{
+{
 		HMODELNODE hCurNode = INVALID_MODEL_NODE;
 		while (CF_ENTRY::Instance()->pLTCSBase->GetLTModel()->GetNextNode(obj, hCurNode, hCurNode) == 0)
 		{
@@ -82,7 +78,6 @@ void ESP::DrawSkeleton(int* obj, D3DCOLOR dwColor)//https://www.mpgh.net/forum/s
 	}
 }
 void ESP::InitPvP(int Status) {
-
 	if (CF_ENTRY::Instance()->pClientShellStub->getLocalClient() == 0)
 		return;
 

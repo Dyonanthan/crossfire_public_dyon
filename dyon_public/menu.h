@@ -8,11 +8,9 @@ class Menu
 public:
 	Menu();
 	~Menu();
-
 	void AddItem(int32_t *status, char item_description[32], char *status_description[], int32_t num_status_descriptions);
 	void Render(LPDIRECT3DDEVICE9 device);
 	void Navigate();
-
 private:
 	LPD3DXFONT font_;
 	MenuItem items_[32];

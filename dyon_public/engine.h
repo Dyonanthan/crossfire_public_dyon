@@ -13,13 +13,10 @@ public:
 	DWORD getLocalPlayerFunc();
 	DWORD getIntersectSegment();
 	void HookFlipScreen(uint32_t routine, uint32_t * original);
-	IDirect3DDevice9 * GetDevice();
-
+	IDirect3DDevice9 *GetDevice();
 	bool WorldToScreen(D3DXVECTOR3 * vWorldLocation, D3DXVECTOR3 * vScreenCoord);
-	void HookZMFunction(uint32_t routine, uint32_t * original);
 	void Run();
 	bool __cdecl Engine::IsVisible(D3DXVECTOR3 MePos, D3DXVECTOR3 TargetPos);
-	
 	bool ValidPointer(void* Pointer)
 	{
 		return !IsBadReadPtr(Pointer, 4) && Pointer;
@@ -34,15 +31,11 @@ private:
 	uint32_t deviceGame_;
 	uint32_t flipscreen_;
 	uint32_t call_to_flipscreen_;
-	uint32_t zmfunction_;
-	uint32_t call_to_zmfunction_;
 	uint32_t address_of_cGame;
 	uint32_t getlocalplayer_;
 	uint32_t address_of_intersect_;
 	int32_t wallhack_status_;
 	int32_t seeghost_status_;
 	int32_t phantom_status_;
-
-	int32_t no_recoil_status_;
 };
 

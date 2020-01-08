@@ -7,7 +7,6 @@
 #define COLOR_WHITE		0xFFFFFFFF
 #define COLOR_BLACK		0xFF000000
 #define COLOR_YELLOW	0xFFFFFF00
-
 struct Vertex
 {
 	float x;
@@ -16,7 +15,6 @@ struct Vertex
 	float h;
 	D3DCOLOR color;
 };
-
 void FillRectangle(int32_t x, int32_t y, int32_t w, int32_t h, D3DCOLOR color, LPDIRECT3DDEVICE9 device);
 void DrawBorder(int32_t x, int32_t y, int32_t w, int32_t h, int32_t p, D3DCOLOR color, LPDIRECT3DDEVICE9 device);
 void DrawBox(int32_t x, int32_t y, int32_t w, int32_t h, D3DCOLOR back_color, D3DCOLOR border_color, LPDIRECT3DDEVICE9 device);

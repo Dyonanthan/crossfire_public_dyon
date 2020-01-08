@@ -20,10 +20,8 @@ using _IntersectSegment = bool(__cdecl*)(IntersectQuery&, IntersectInfo*);
 
 typedef unsigned int HMODELPIECE;
 #define INVALID_MODEL_PIECE		((HMODELPIECE)-1)
-
 typedef unsigned int HMODELNODE;
 #define INVALID_MODEL_NODE		((HMODELNODE)-1)
-
 typedef unsigned int HMODELSOCKET;
 #define INVALID_MODEL_SOCKET	((HMODELSOCKET)-1)
 
@@ -33,12 +31,10 @@ template< class type > type GetVFunction(PVOID base, SIZE_T index)
 
 	return (type)(vtablefunc[index]);
 }
-
 struct LTRotation
 {
 	float Quad[4];
 };
-
 struct LTransform
 {
 	D3DXVECTOR3	m_vPos;
@@ -118,8 +114,6 @@ public:
 		typedef signed int(__thiscall* GetNumNodesFn)(void*, int *hObj, unsigned int &num_nodes);
 		return GetVFunction<GetNumNodesFn>(this, 21)(this, hObj, num_nodes);
 	}
-
-
 };
 class ILTCSBase : public ICLTClient
 {
@@ -145,7 +139,6 @@ public:
 		return GetVFunction<oGetObjectBoxMax>(this, 141)(this, hObj, maxs);
 	}
 };
-
 class CLocalClient
 {
 public:
@@ -164,7 +157,6 @@ public:
 		return (CLocalClient*)((DWORD)this + 0x78);
 	}
 }; //Size: 0x0044
-
 class CF_ENTRY
 {
 public:
@@ -178,7 +170,6 @@ public:
 		return (CF_ENTRY*)ADDR_CROSSFIRE_ENGINE;
 	}
 }; //Size: 0x0040
-
 class CGameCon
 {
 public:
@@ -190,7 +181,6 @@ public:
 	int32_t SeeGhost; //0x00B4 original value 5
 	char pad_00B8[4032]; //0x00B8
 }; //Size: 0x1078
-
 class CEntity
 {
 public:
@@ -210,7 +200,6 @@ public:
 	int8_t Kills; //0x0046
 	char pad_0047[1009]; //0x0047
 }; //Size: 0x0074
-
 struct IntersectInfo
 {
 	D3DXVECTOR3 vImpactPos;	//0x0000
@@ -220,7 +209,6 @@ struct IntersectInfo
 	DWORD m_SurfaceFlags;	//0x0024
 	DWORD m_hNode;			//0x0028
 };
-
 struct IntersectQuery
 {
 	D3DXVECTOR3 From;					//0x0000

@@ -1,4 +1,4 @@
-// log.cpp : Defines functions for simple logging.
+// https://github.com/biesigrr/phoenix-cf
 
 #include "log.h"
 

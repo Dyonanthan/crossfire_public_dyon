@@ -1,9 +1,6 @@
-// log.h : contains the definition for the simple logging class.
-
 #pragma once
 
 #include "stdafx.h"
-
 enum LogLevel
 {
 	kError,
@@ -11,7 +8,6 @@ enum LogLevel
 	kInfo,
 	kDebug
 };
-
 class Log
 {
 public:

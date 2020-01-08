@@ -1,7 +1,7 @@
 #include "menu.h"
 #include "d3d.h"
 #include "memory.h"
-
+//https://github.com/biesigrr/phoenix-cf
 Menu::Menu()
 {
 	this->width_ = 190;
@@ -11,7 +11,7 @@ Menu::~Menu()
 {
 
 }
-
+//
 void Menu::AddItem(int32_t *status, char item_description[32], char *status_description[], int32_t num_status_descriptions)
 {
 	// better not look at this code
